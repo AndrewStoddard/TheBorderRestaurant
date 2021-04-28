@@ -45,19 +45,16 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
             @RenderBody()
-        </main>
     </div>
 
     <footer class="border-top footer text-muted pb-4 pt-4" style="background-color: #dda92e; height: 10%">
         <div class="container">
             <div class="row">
-                <div class="col-4">&copy; 2021 - TheBorderRestaurant</div>
-                <div class="col-4"><a asp-action="Index" asp-controller="Home">Employee View</a></div>
-                <div class="col-1 p-0 m-1 text-center"><a href="http://www.facebook.com/thebordermexicanrestaurant"><i class="fa fa-facebook-official fa-3x"></i></a></div>
-                <div class="col-1 p-0 m-1 text-center"><a href="https://www.twitter.com/TheBorder1"><i class="fa fa-twitter-square fa-3x" ></i></a></div>
-                <div class="col-1 p-0 m-1 text-center"><a href="#"><i class="fa fa-phone-square fa-3x"></i></a></div>
+                <div class="col order-first text-center">&copy; 2021 - TheBorderRestaurant</div>
+                <div class="col text-center"><a asp-action="Index" asp-controller="Home">Employee View</a></div>
+                <div class="col order-last text-center"><a href="http://www.facebook.com/thebordermexicanrestaurant"><i class="fa fa-facebook-official fa-3x m-1"></i></a><a href="https://www.twitter.com/TheBorder1"><i class="fa fa-twitter-square fa-3x m-1"></i></a><a href="#"><i class="fa fa-phone-square fa-3x m-1"></i></a></div>
+
             </div>
             
         </div>
