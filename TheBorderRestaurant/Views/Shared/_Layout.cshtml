@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TheBorderRestaurant</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
+<body style="background-color:#f4e3b9 ; background-image:url('http://static.wixstatic.com/media/874525150724b27ecb7c53aa6954e1d1.wix_mp/v1/fill/w_500,h_500,al_c/874525150724b27ecb7c53aa6954e1d1.wix_mp'); background-repeat: repeat;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 pb-1 pb-1" style="background-color: #dda92e; height: 10%">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TheBorderRestaurant</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="http://static.wixstatic.com/media/77fc33_a9f1d5e25357b3f67e703135287df987.png/v1/fill/w_375,h_125,al_c,q_85,usm_0.66_1.00_0.01/77fc33_a9f1d5e25357b3f67e703135287df987.webp" class="rounded"/></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,6 +20,24 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Specials</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Contact</a>
+                        </li>
+                        <li class="nav-item float-right">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a>
+                        </li>
+                        <li class="nav-item float-right">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Register</a>
                         </li>
                     </ul>
                 </div>
@@ -31,9 +50,16 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted pb-4 pt-4" style="background-color: #dda92e; height: 10%">
         <div class="container">
-            &copy; 2021 - TheBorderRestaurant
+            <div class="row">
+                <div class="col-4">&copy; 2021 - TheBorderRestaurant</div>
+                <div class="col-4"><a asp-action="Index" asp-controller="Home">Employee View</a></div>
+                <div class="col-1 p-0 m-1 text-center"><a href="http://www.facebook.com/thebordermexicanrestaurant"><i class="fa fa-facebook-official fa-3x"></i></a></div>
+                <div class="col-1 p-0 m-1 text-center"><a href="https://www.twitter.com/TheBorder1"><i class="fa fa-twitter-square fa-3x" ></i></a></div>
+                <div class="col-1 p-0 m-1 text-center"><a href="#"><i class="fa fa-phone-square fa-3x"></i></a></div>
+            </div>
+            
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
