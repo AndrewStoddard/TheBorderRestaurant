@@ -1,0 +1,22 @@
+﻿@using TheBorderRestaurant.Models.DomainModels
+@{
+}
+<div class="jumbotron text-center">
+    <h1>Menu</h1>
+</div>
+<div class="row">
+    @foreach (FoodItem item in ViewBag.FoodItems)
+    {
+        <div class="col">
+            <div class="card w-100 m-2">
+                <img src="@($"data:image/{item.ImageType};base64,{item.Base64Image}")" class="card-img-top rounded p-1">
+                <div class="card-body" style="background-color: red; color: white;">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Price > @item.Description</p>
+                    <a class="btn btn-outline-danger">Add To Cart</a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
