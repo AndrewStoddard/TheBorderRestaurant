@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -39,9 +40,10 @@ namespace TheBorderRestaurant
             services.AddDbContext<BorderContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("BorderContext")));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+            services.AddHttpContextAccessor();
             services.AddIdentity<User, IdentityRole>(options =>
                     {
+                        options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
                         options.Password.RequiredLength = 6;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequireDigit = false;

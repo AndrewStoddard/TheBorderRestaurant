@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TheBorderRestaurant.Models.DataLayer;
 using TheBorderRestaurant.Models.DomainModels;
 using TheBorderRestaurant.Models.ViewModels;
 
@@ -12,16 +15,20 @@ namespace TheBorderRestaurant.Controllers
 
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IHttpContextAccessor contextAccessor;
 
         #endregion
 
         #region Constructors
 
         public AccountController(UserManager<User> userMngr,
-            SignInManager<User> signInMngr)
+            SignInManager<User> signInMngr, IUnitOfWork unitOfWork, IHttpContextAccessor contextAccessor)
         {
             this.userManager = userMngr;
             this.signInManager = signInMngr;
+            this.unitOfWork = unitOfWork;
+            this.contextAccessor = contextAccessor;
         }
 
         #endregion
@@ -39,7 +46,7 @@ namespace TheBorderRestaurant.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User {
+                var newUser = new User {
                     UserName = model.Username,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
@@ -49,11 +56,28 @@ namespace TheBorderRestaurant.Controllers
                     State = model.State,
                     Zip = model.Zip
                 };
-                var result = await this.userManager.CreateAsync(user, model.Password);
+                var result = await this.userManager.CreateAsync(newUser, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await this.signInManager.SignInAsync(user, false);
+                    await this.signInManager.SignInAsync(newUser, false);
+                    var user = await this.userManager.FindByNameAsync(model.Username);
+                    var order = this.unitOfWork.FoodOrders.Get()
+                                    .FirstOrDefault(o => o.UserId == user.Id && o.IsComplete == false);
+                    if (order == null)
+                    {
+                        order = new FoodOrder {
+                            UserId = user.Id,
+                            User = user,
+                            IsComplete = false
+                        };
+                        this.unitOfWork.FoodOrders.Insert(order);
+                        this.unitOfWork.Save();
+                    }
+
+                    this.contextAccessor.HttpContext.Session.SetInt32("orderid",
+                        this.unitOfWork.FoodOrders.Get()
+                            .First(o => o.UserId == user.Id && o.IsComplete == false).Id);
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -90,6 +114,25 @@ namespace TheBorderRestaurant.Controllers
 
                 if (result.Succeeded)
                 {
+                    var user = await this.userManager.FindByNameAsync(model.Username);
+
+                    var order = this.unitOfWork.FoodOrders.Get()
+                                    .FirstOrDefault(o => o.UserId == user.Id && o.IsComplete == false);
+                    if (order == null)
+                    {
+                        order = new FoodOrder {
+                            UserId = user.Id,
+                            User = user,
+                            IsComplete = false
+                        };
+                        this.unitOfWork.FoodOrders.Insert(order);
+                        this.unitOfWork.Save();
+                    }
+
+                    this.contextAccessor.HttpContext.Session.SetInt32("orderid",
+                        this.unitOfWork.FoodOrders.Get()
+                            .First(o => o.UserId == user.Id && o.IsComplete == false).Id);
+
                     if (!string.IsNullOrEmpty(model.ReturnUrl) &&
                         Url.IsLocalUrl(model.ReturnUrl))
                     {

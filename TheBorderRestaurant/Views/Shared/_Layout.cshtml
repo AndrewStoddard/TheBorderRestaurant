@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body style="background-color:#f4e3b9 ; background-image:url('http://static.wixstatic.com/media/874525150724b27ecb7c53aa6954e1d1.wix_mp/v1/fill/w_500,h_500,al_c/874525150724b27ecb7c53aa6954e1d1.wix_mp'); background-repeat: repeat;">
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> signInManager
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 pb-1 pb-1" style="background-color: #dda92e; height: 10%">
             <div class="container">
@@ -33,15 +35,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Contact</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Order</a>
-                        </li>
-                        <li class="nav-item float-right">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a>
-                        </li>
-                        <li class="nav-item float-right">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Register</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="post" asp-action="LogOut" asp-controller="Account"
+                                      asp-area="">
+                                    <input type="submit" value="Log Out" class="nav-link text-dark" />
+                                    <span class="text-light">@User.Identity.Name</span>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                           <li class="nav-item float-right">
+                               <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogIn">Login</a>
+                           </li>
+                            <li class="nav-item float-right">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </div>

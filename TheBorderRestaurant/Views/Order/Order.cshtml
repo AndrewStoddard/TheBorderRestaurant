@@ -1,0 +1,41 @@
+﻿@model OrderViewModel
+@{
+}
+<div class="container-fluid">
+    <table class="table table-borderless">
+        <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+        </th>
+        </thead>
+        <tbody>
+            @foreach (FoodOrderItem item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        @item.FoodItem.Name
+                    </td>
+                    <td>
+                        @item.FoodItem.Price
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                    <td>
+                        Edit/Remove
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

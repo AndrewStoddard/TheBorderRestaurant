@@ -12,6 +12,8 @@ namespace TheBorderRestaurant.Models.DomainModels
         public FoodItem FoodItem { get; set; }
         public int Quantity { get; set; }
 
+        public double TotalPrice => this.FoodItem.Price * this.Quantity;
+
         [Required] public virtual ICollection<FoodOrder> FoodOrders { get; set; }
 
         #endregion
