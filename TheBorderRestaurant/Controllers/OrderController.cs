@@ -39,6 +39,11 @@ namespace TheBorderRestaurant.Controllers
             var orderId = this.contextAccessor.HttpContext.Session.GetInt32("orderid");
             var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems)
                             .FirstOrDefault(o => o.Id == orderId);
+            foreach (var orderItem in order.FoodOrderItems)
+            {
+                orderItem.FoodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == orderItem.FoodItemId);
+            }
+
             var vm = new OrderViewModel {OrderId = order.Id, Items = order.FoodOrderItems.ToList()};
 
             return View(vm);
@@ -55,7 +60,21 @@ namespace TheBorderRestaurant.Controllers
             var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems)
                             .FirstOrDefault(o => o.Id == orderId);
             var foodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == id);
-            order.FoodOrderItems.Add(new FoodOrderItem {FoodItem = foodItem, FoodItemId = foodItem.Id, Quantity = 1});
+            var foodOrderItem = order.FoodOrderItems.FirstOrDefault(foi => foi.FoodItemId == id);
+            if (foodOrderItem == null)
+            {
+                foodOrderItem = new FoodOrderItem {FoodItem = foodItem, FoodItemId = foodItem.Id, Quantity = 1};
+
+                this.unitOfWork.FoodOrderItems.Insert(foodOrderItem);
+            }
+            else
+            {
+                foodOrderItem.Quantity++;
+                this.unitOfWork.FoodOrderItems.Update(foodOrderItem);
+            }
+
+            order.FoodOrderItems.Add(foodOrderItem);
+            this.unitOfWork.FoodOrders.Update(order);
             this.unitOfWork.Save();
             TempData["message"] = $"Added {foodItem.Name} to order";
             return RedirectToAction("Menu", "Home");
