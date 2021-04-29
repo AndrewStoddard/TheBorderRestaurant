@@ -12,11 +12,11 @@ namespace TheBorderRestaurant.Models.ViewModels
 
         [Required(ErrorMessage = "Please enter a first name.")]
         [StringLength(255)]
-        public string Firstname { get; set; }
+        public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Please enter a last name.")]
         [StringLength(255)]
-        public string Lastname { get; set; }
+        public string LastName { get; set; }
 
         [Required(ErrorMessage = "Please enter an email address.")]
         [DataType(DataType.EmailAddress)]
