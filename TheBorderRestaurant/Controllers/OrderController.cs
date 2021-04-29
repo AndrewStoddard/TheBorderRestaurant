@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheBorderRestaurant.Models.DataLayer;
@@ -14,15 +17,17 @@ namespace TheBorderRestaurant.Controllers
 
         private readonly IUnitOfWork unitOfWork;
         private readonly IHttpContextAccessor contextAccessor;
+        private readonly UserManager<User> userManager;
 
         #endregion
 
         #region Constructors
 
-        public OrderController(IUnitOfWork unitOfWork, IHttpContextAccessor contextAccessor)
+        public OrderController(IUnitOfWork unitOfWork, IHttpContextAccessor contextAccessor, UserManager<User> userMngr)
         {
             this.unitOfWork = unitOfWork;
             this.contextAccessor = contextAccessor;
+            this.userManager = userMngr;
         }
 
         #endregion
@@ -80,27 +85,31 @@ namespace TheBorderRestaurant.Controllers
             return RedirectToAction("Menu", "Home");
         }
 
-        public IActionResult Edit(int foodOrderItemId)
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
             var foodOrderItem = this.unitOfWork.FoodOrderItems.Get().Include(f => f.FoodItem)
-                                    .FirstOrDefault(f => f.Id == foodOrderItemId);
+                                    .FirstOrDefault(f => f.Id == id);
             return View(foodOrderItem);
         }
 
-        public IActionResult Edit(int foodOrderItemId, int quantity)
+        [HttpPost]
+        public IActionResult Edit(FoodOrderItem foodOrderItem)
         {
-            var foodOrderItem = this.unitOfWork.FoodOrderItems.Get().Include(f => f.FoodItem)
-                                    .FirstOrDefault(f => f.Id == foodOrderItemId);
+            var quantity = foodOrderItem.Quantity;
+            foodOrderItem = this.unitOfWork.FoodOrderItems.Get().Include(f => f.FoodItem)
+                                .FirstOrDefault(f => f.Id == foodOrderItem.Id);
             foodOrderItem.Quantity = quantity;
+            this.unitOfWork.FoodOrderItems.Update(foodOrderItem);
             this.unitOfWork.Save();
             TempData["message"] = $"Updated Quantity of {foodOrderItem.FoodItem.Name} to {quantity}";
             return RedirectToAction("Order");
         }
 
-        public IActionResult Remove(int foodOrderItemId)
+        public IActionResult Remove(int id)
         {
             var foodOrderItem = this.unitOfWork.FoodOrderItems.Get().Include(f => f.FoodItem)
-                                    .FirstOrDefault(f => f.Id == foodOrderItemId);
+                                    .FirstOrDefault(f => f.Id == id);
             var orderId = this.contextAccessor.HttpContext.Session.GetInt32("orderid");
             var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems)
                             .FirstOrDefault(o => o.Id == orderId);
@@ -108,6 +117,26 @@ namespace TheBorderRestaurant.Controllers
             this.unitOfWork.Save();
             TempData["message"] = $"Removed {foodOrderItem.FoodItem.Name} from order.";
             return RedirectToAction("Order");
+        }
+
+        public async Task<IActionResult> CheckOut(int id)
+        {
+            var order = this.unitOfWork.FoodOrders.Get().FirstOrDefault(o => o.Id == id);
+            order.IsComplete = true;
+            order.OrderDateTime = DateTime.Now;
+            var user = await this.userManager.GetUserAsync(User);
+            var newOrder = new FoodOrder {
+                UserId = user.Id,
+                User = user,
+                IsComplete = false
+            };
+            this.unitOfWork.FoodOrders.Insert(newOrder);
+            this.unitOfWork.FoodOrders.Update(order);
+            this.unitOfWork.Save();
+            this.contextAccessor.HttpContext.Session.SetInt32("orderid",
+                this.unitOfWork.FoodOrders.Get().First(o => o.IsComplete == false && o.UserId == user.Id).Id);
+            TempData["message"] = "Order Placed!";
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion

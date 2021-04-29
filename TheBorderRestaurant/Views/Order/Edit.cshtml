@@ -2,3 +2,23 @@
 @{
 }
 
+<h1>Edit</h1>
+<div class="container">
+    <form class="form-group" method="post">
+
+
+
+        <label>Name: </label>
+        <input class="form-control" disabled="disabled" asp-for="FoodItem.Name" />
+        <label>Price: </label>
+        <input class="form-control" disabled="disabled" asp-for="FoodItem.Price" />
+        <label>Quantity: </label>
+        <input class="form-control" asp-for="Quantity" />
+        <input type="hidden" asp-for="FoodItemId"/>
+
+
+        <button type="submit" class="btn btn-primary m-1">Edit</button>
+        <a class="btn btn-primary" asp-action="Remove" asp-route-id="@Model.Id">Remove</a>
+        <a class="btn btn-primary" asp-action="Order" asp-route-id="@Model.Id">Cancel</a>
+    </form>
+</div>
