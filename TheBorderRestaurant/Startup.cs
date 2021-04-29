@@ -38,6 +38,7 @@ namespace TheBorderRestaurant
             services.AddControllersWithViews();
             services.AddDbContext<BorderContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("BorderContext")));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentity<User, IdentityRole>(options =>
                     {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheBorderRestaurant.Models.DomainModels
 {
@@ -10,6 +12,9 @@ namespace TheBorderRestaurant.Models.DomainModels
         public int UserId { get; set; }
         public User User { get; set; }
         public DateTime OrderDateTime { get; set; }
+        public bool IsComplete { get; set; }
+
+        [Required] public virtual ICollection<FoodOrderItem> FoodOrderItems { get; set; }
 
         #endregion
     }

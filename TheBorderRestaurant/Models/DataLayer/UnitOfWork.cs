@@ -2,7 +2,7 @@
 
 namespace TheBorderRestaurant.Models.DataLayer
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         #region Data members
 
@@ -16,19 +16,19 @@ namespace TheBorderRestaurant.Models.DataLayer
         ///     Gets the food orders.
         /// </summary>
         /// <value>The food orders.</value>
-        private IRepository<FoodOrder> FoodOrders { get; }
+        public IRepository<FoodOrder> FoodOrders { get; }
 
         /// <summary>
         ///     Gets the food order items.
         /// </summary>
         /// <value>The food order items.</value>
-        private IRepository<FoodOrderItem> FoodOrderItems { get; }
+        public IRepository<FoodOrderItem> FoodOrderItems { get; }
 
         /// <summary>
         ///     Gets the food items.
         /// </summary>
         /// <value>The food items.</value>
-        private IRepository<FoodItem> FoodItems { get; }
+        public IRepository<FoodItem> FoodItems { get; }
 
         #endregion
 
