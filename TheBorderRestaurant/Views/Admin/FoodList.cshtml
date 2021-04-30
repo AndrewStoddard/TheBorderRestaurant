@@ -2,6 +2,20 @@
 @{
 }
 <div class="container-fluid">
+    <ul class="nav nav-tabs m-3">
+        <li class="nav-item">
+            <a asp-action="FoodList"
+               class="nav-link @(ViewBag.Page == "FoodList" ? "active" : "")">
+                Menu
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="OrderList"
+               class="nav-link @(ViewBag.Page == "OrderList" ? "active" : "")">
+                Orders
+            </a>
+        </li>
+    </ul>
     <a class="btn btn-primary" asp-action="AddFood">Add New</a>
     <table class="table table-bordered">
         <thead>

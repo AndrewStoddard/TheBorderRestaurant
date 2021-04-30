@@ -2,6 +2,20 @@
 @{
 }
 <div class="container-fluid">
+    <ul class="nav nav-tabs m-3">
+        <li class="nav-item">
+            <a asp-action="FoodList"
+               class="nav-link @(ViewBag.Page == "FoodList" ? "active" : "")">
+                Menu
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="OrderList"
+               class="nav-link @(ViewBag.Page == "OrderList" ? "active" : "")">
+                Orders
+            </a>
+        </li>
+    </ul>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -31,7 +45,7 @@
                         @order.Total()
                     </td>
                     <td>
-                        <a class="btn btn-outline-danger" asp-action="ViewOrder" asp-route-id="@order.Id">View</a>
+                        <a class="btn btn-outline-danger" asp-action="ViewOrder" asp-route-orderId="@order.Id">View</a>
                     </td>
                 </tr>
             }

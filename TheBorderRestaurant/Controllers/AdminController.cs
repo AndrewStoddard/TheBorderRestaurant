@@ -58,6 +58,7 @@ namespace TheBorderRestaurant.Controllers
                 TotalPages = totalPages,
                 Items = food
             };
+            ViewBag.Page = "FoodList";
             return View(viewModel);
         }
 
@@ -108,30 +109,36 @@ namespace TheBorderRestaurant.Controllers
         public IActionResult OrderList(int pageNumber = 0)
         {
             var pageSize = this.contextAccessor.HttpContext.Session.GetInt32("order_page_size") ?? 3;
-            var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems).Include(o => o.User).ToList();
-            var totalPages = order.Count / pageSize;
+            var orders = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems).Include(o => o.User).ToList();
+            foreach (var orderItem in orders.SelectMany(order => order.FoodOrderItems))
+            {
+                orderItem.FoodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == orderItem.FoodItemId);
+            }
+
+            var totalPages = orders.Count / pageSize;
 
             if (this.contextAccessor.HttpContext.Session.GetInt32("order_sort_direction") ==
                 (int) SortDirection.Ascending)
             {
-                order = this.orderAscending(order);
+                orders = this.orderAscending(orders);
             }
             else if (this.contextAccessor.HttpContext.Session.GetInt32("order_sort_direction") ==
                      (int) SortDirection.Descending)
             {
-                order = this.orderDescending(order);
+                orders = this.orderDescending(orders);
             }
 
-            totalPages += order.Count % pageSize == 0 ? 0 : 1;
-            order = order.Skip((pageNumber - 1) * pageSize).Take(pageSize > order.Count ? order.Count : pageSize)
-                         .ToList();
+            totalPages += orders.Count % pageSize == 0 ? 0 : 1;
+            orders = orders.Skip((pageNumber - 1) * pageSize).Take(pageSize > orders.Count ? orders.Count : pageSize)
+                           .ToList();
 
             var viewModel = new OrderListViewModel {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 TotalPages = totalPages,
-                Orders = order
+                Orders = orders
             };
+            ViewBag.Page = "OrderList";
             return View(viewModel);
         }
 
