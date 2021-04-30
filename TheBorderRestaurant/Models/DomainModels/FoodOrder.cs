@@ -17,5 +17,20 @@ namespace TheBorderRestaurant.Models.DomainModels
         [Required] public virtual ICollection<FoodOrderItem> FoodOrderItems { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public double Total()
+        {
+            var sum = 0.0;
+            foreach (var orderItem in this.FoodOrderItems)
+            {
+                sum += orderItem.TotalPrice;
+            }
+
+            return sum;
+        }
+
+        #endregion
     }
 }

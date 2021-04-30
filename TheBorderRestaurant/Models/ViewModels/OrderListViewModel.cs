@@ -31,7 +31,7 @@ namespace TheBorderRestaurant.Models.ViewModels
         ///     Gets the page sizes.
         /// </summary>
         /// <value>The page sizes.</value>
-        public int[] PageSizes { get; } = {1, 2, 3, 4, 5};
+        public int[] PageSizes { get; } = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
         #endregion
     }
