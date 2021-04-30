@@ -111,7 +111,8 @@ namespace TheBorderRestaurant.Controllers
         public IActionResult OrderList(int pageNumber = 0)
         {
             var pageSize = this.contextAccessor.HttpContext.Session.GetInt32("order_page_size") ?? 3;
-            var orders = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems).Include(o => o.User).ToList();
+            var orders = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems).Include(o => o.User)
+                             .Where(o => o.IsComplete).ToList();
             foreach (var orderItem in orders.SelectMany(order => order.FoodOrderItems))
             {
                 orderItem.FoodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == orderItem.FoodItemId);
