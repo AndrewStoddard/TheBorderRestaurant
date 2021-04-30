@@ -1,0 +1,35 @@
+﻿@model FoodItem
+@{
+
+}
+
+<h1>@ViewBag.Action</h1>
+<div class="container">
+    <form class="form-group" method="post">
+
+
+
+        <label>Name: </label>
+        <input class="form-control" asp-for="Name" />
+
+        <label>Description: </label>
+        <input class="form-control" asp-for="Description" />
+
+        <label>Price: </label>
+        <input class="form-control" asp-for="Price" />
+
+        <label>Image Base 64 Value: </label>
+        <input class="form-control" asp-for="Base64Image" />
+
+        <input type="hidden" asp-for="Id" />
+        
+        <button type="submit" class="btn btn-primary m-1">@ViewBag.Action</button>
+
+        @if (ViewBag.Action == "Edit")
+        {
+            <a class="btn btn-primary" asp-action="RemoveFood" asp-route-id="@Model.Id">Remove</a>
+        }
+
+        <a class="btn btn-primary" asp-action="FoodList" asp-route-id="@Model.Id">Cancel</a>
+    </form>
+</div>

@@ -2,7 +2,7 @@
 @{
 }
 <div class="container-fluid">
-    <a class="btn btn-primary" hidden="@(Model.Items.Count == 0)" asp-action="CheckOut" asp-route-id="@Model.OrderId">Check out</a>
+    <a class="btn btn-primary" asp-action="OrderList">Back</a>
     <table class="table table-borderless">
         <thead>
         <th>
@@ -29,9 +29,6 @@
                 </td>
                 <td>
                     @item.Quantity
-                </td>
-                <td>
-                    <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                 </td>
             </tr>
         }

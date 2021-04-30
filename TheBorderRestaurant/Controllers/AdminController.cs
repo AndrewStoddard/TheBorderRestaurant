@@ -180,6 +180,68 @@ namespace TheBorderRestaurant.Controllers
             return RedirectToAction("OrderList");
         }
 
+        public IActionResult ViewOrder(int orderId)
+        {
+            var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems)
+                            .FirstOrDefault(o => o.Id == orderId);
+            foreach (var orderItem in order.FoodOrderItems)
+            {
+                orderItem.FoodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == orderItem.FoodItemId);
+            }
+
+            var vm = new OrderViewModel {OrderId = order.Id, Items = order.FoodOrderItems.ToList()};
+
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult EditFood(int id)
+        {
+            var foodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == id);
+            ViewBag.Action = "Edit";
+            return View("AddEditFood", foodItem);
+        }
+
+        [HttpGet]
+        public IActionResult AddFood()
+        {
+            ViewBag.Action = "Add";
+            return View("AddEditFood");
+        }
+
+        [HttpPost]
+        public IActionResult AddEditFood(FoodItem foodItem)
+        {
+            if (ModelState.IsValid)
+            {
+                foodItem.ImageType = "jpeg";
+                if (foodItem.Id == 0)
+                {
+                    this.unitOfWork.FoodItems.Insert(foodItem);
+                }
+                else
+                {
+                    this.unitOfWork.FoodItems.Update(foodItem);
+                }
+            }
+            else
+            {
+                if (foodItem.Id == 0)
+                {
+                    ViewBag.Action = "Add";
+                }
+                else
+                {
+                    ViewBag.Action = "Edit";
+                }
+
+                return View("AddEditFood", foodItem);
+            }
+
+            this.unitOfWork.Save();
+            return RedirectToAction("FoodList");
+        }
+
         #endregion
     }
 }
