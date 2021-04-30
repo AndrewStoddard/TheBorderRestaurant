@@ -221,7 +221,6 @@ namespace TheBorderRestaurant.Controllers
         {
             if (ModelState.IsValid)
             {
-                foodItem.ImageType = "jpeg";
                 if (foodItem.Id == 0)
                 {
                     this.unitOfWork.FoodItems.Insert(foodItem);
