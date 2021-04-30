@@ -218,10 +218,12 @@ namespace TheBorderRestaurant.Controllers
                 if (foodItem.Id == 0)
                 {
                     this.unitOfWork.FoodItems.Insert(foodItem);
+                    TempData["message"] = $"Added {foodItem.Name} to menu.";
                 }
                 else
                 {
                     this.unitOfWork.FoodItems.Update(foodItem);
+                    TempData["message"] = $"Updated {foodItem.Name} on menu.";
                 }
             }
             else
@@ -238,6 +240,15 @@ namespace TheBorderRestaurant.Controllers
                 return View("AddEditFood", foodItem);
             }
 
+            this.unitOfWork.Save();
+            return RedirectToAction("FoodList");
+        }
+
+        public IActionResult RemoveFood(int id)
+        {
+            var food = this.unitOfWork.FoodItems.Get().First(f => f.Id == id);
+            this.unitOfWork.FoodItems.Delete(food);
+            TempData["message"] = $"Deleted {food.Name} from menu.";
             this.unitOfWork.Save();
             return RedirectToAction("FoodList");
         }
