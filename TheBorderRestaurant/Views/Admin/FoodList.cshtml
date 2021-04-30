@@ -1,3 +1,55 @@
-﻿@{
+﻿@model FoodListViewModel
+@{
 }
+<div class="container-fluid">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>
+                <a asp-action="FoodSort" asp-route-sort="SortByFoodName">Name</a>
+            </th>
+            <th>
+                <a asp-action="FoodSort" asp-route-sort="SortByDescription">Description</a>
+            </th>
+            <th>
+                <a asp-action="FoodSort" asp-route-sort="SortByFoodPrice">Price</a>
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (FoodItem item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger" asp-action="EditFood" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div class="container-fluid m-2">
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a asp-action="FoodList" asp-controller="Admin" asp-route-pageNumber="@i" class="btn btn-outline-primary @(Model.PageNumber == i ? "active" : "")">@i</a>
+    }
+</div>
+<div class="container-fluid m-2">
+    <form class="form-inline" asp-action="FoodPageSize" method="post">
+        <label>Page Size: </label>
+        <select class="form-control m-2" name="size" asp-items="@(new SelectList(Model.PageSizes, Model.PageSize))">
+        </select>
 
+        <button type="submit" class="btn btn-primary m-1">Apply</button>
+    </form>
+</div>

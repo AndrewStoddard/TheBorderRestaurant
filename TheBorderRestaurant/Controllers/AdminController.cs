@@ -63,7 +63,7 @@ namespace TheBorderRestaurant.Controllers
 
         private List<FoodItem> orderDescending(List<FoodItem> food)
         {
-            food = this.contextAccessor.HttpContext.Session.GetInt32("sort_type") switch {
+            food = this.contextAccessor.HttpContext.Session.GetInt32("food_sort_type") switch {
                 0 => food.OrderBy(f => f.Name).ToList(),
                 1 => food.OrderBy(f => f.Description).ToList(),
                 2 => food.OrderBy(f => f.Price).ToList()
@@ -73,7 +73,7 @@ namespace TheBorderRestaurant.Controllers
 
         private List<FoodItem> orderAscending(List<FoodItem> food)
         {
-            food = this.contextAccessor.HttpContext.Session.GetInt32("sort_type") switch {
+            food = this.contextAccessor.HttpContext.Session.GetInt32("food_sort_type") switch {
                 0 => food.OrderByDescending(f => f.Name).ToList(),
                 1 => food.OrderByDescending(f => f.Description).ToList(),
                 2 => food.OrderByDescending(f => f.Price).ToList()
@@ -95,6 +95,13 @@ namespace TheBorderRestaurant.Controllers
                 this.contextAccessor.HttpContext.Session.SetInt32("food_sort_direction", (int) SortDirection.Ascending);
             }
 
+            return RedirectToAction("FoodList");
+        }
+
+        [HttpPost]
+        public IActionResult FoodPageSize(int size)
+        {
+            this.contextAccessor.HttpContext.Session.SetInt32("food_page_size", size);
             return RedirectToAction("FoodList");
         }
 
@@ -130,7 +137,7 @@ namespace TheBorderRestaurant.Controllers
 
         private List<FoodOrder> orderDescending(List<FoodOrder> order)
         {
-            order = this.contextAccessor.HttpContext.Session.GetInt32("sort_type") switch {
+            order = this.contextAccessor.HttpContext.Session.GetInt32("order_sort_type") switch {
                 3 => order.OrderBy(f => f.Total()).ToList(),
                 4 => order.OrderBy(f => f.User.FirstName).ToList(),
                 5 => order.OrderBy(f => f.OrderDateTime).ToList()
@@ -140,7 +147,7 @@ namespace TheBorderRestaurant.Controllers
 
         private List<FoodOrder> orderAscending(List<FoodOrder> order)
         {
-            order = this.contextAccessor.HttpContext.Session.GetInt32("sort_type") switch {
+            order = this.contextAccessor.HttpContext.Session.GetInt32("order_sort_type") switch {
                 3 => order.OrderByDescending(f => f.Total()).ToList(),
                 4 => order.OrderByDescending(f => f.User.FirstName).ToList(),
                 5 => order.OrderByDescending(f => f.OrderDateTime).ToList()
@@ -163,6 +170,13 @@ namespace TheBorderRestaurant.Controllers
                     (int) SortDirection.Ascending);
             }
 
+            return RedirectToAction("OrderList");
+        }
+
+        [HttpPost]
+        public IActionResult OrderPageSize(int size)
+        {
+            this.contextAccessor.HttpContext.Session.SetInt32("order_page_size", size);
             return RedirectToAction("OrderList");
         }
 
