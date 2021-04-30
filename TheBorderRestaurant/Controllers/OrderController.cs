@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using TheBorderRestaurant.Models.ViewModels;
 
 namespace TheBorderRestaurant.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         #region Data members
@@ -36,12 +38,12 @@ namespace TheBorderRestaurant.Controllers
 
         public IActionResult Order()
         {
-            if (User?.Identity?.IsAuthenticated == false)
+            var orderId = this.contextAccessor.HttpContext.Session.GetInt32("orderid");
+            if (orderId == null)
             {
-                return RedirectToAction("LogIn", "Account", routeValues: "/Home/Order");
+                return RedirectToAction("LogOut", "Account");
             }
 
-            var orderId = this.contextAccessor.HttpContext.Session.GetInt32("orderid");
             var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems)
                             .FirstOrDefault(o => o.Id == orderId);
             foreach (var orderItem in order.FoodOrderItems)
@@ -56,12 +58,12 @@ namespace TheBorderRestaurant.Controllers
 
         public IActionResult AddToOrder(int id)
         {
-            if (User?.Identity?.IsAuthenticated == false)
+            var orderId = this.contextAccessor.HttpContext.Session.GetInt32("orderid");
+            if (orderId == null)
             {
-                return RedirectToAction("LogIn", "Account", routeValues: "/Home/Menu");
+                return RedirectToAction("LogOut", "Account");
             }
 
-            var orderId = this.contextAccessor.HttpContext.Session.GetInt32("orderid");
             var order = this.unitOfWork.FoodOrders.Get().Include(o => o.FoodOrderItems)
                             .FirstOrDefault(o => o.Id == orderId);
             var foodItem = this.unitOfWork.FoodItems.Get().FirstOrDefault(f => f.Id == id);

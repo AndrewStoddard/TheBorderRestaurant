@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using TheBorderRestaurant.Models.ViewModels;
 
 namespace TheBorderRestaurant.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         #region Data members

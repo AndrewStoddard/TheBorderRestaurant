@@ -46,11 +46,6 @@ namespace TheBorderRestaurant.Controllers
 
         public IActionResult OrderDelivery()
         {
-            if (User?.Identity?.IsAuthenticated == false)
-            {
-                return RedirectToAction("LogIn", "Account", routeValues: "/Home/Menu");
-            }
-
             return RedirectToAction("Menu");
         }
 
