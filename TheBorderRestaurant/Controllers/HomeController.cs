@@ -44,11 +44,6 @@ namespace TheBorderRestaurant.Controllers
             return View();
         }
 
-        public IActionResult OrderDelivery()
-        {
-            return RedirectToAction("Menu");
-        }
-
         #endregion
     }
 }
