@@ -64,26 +64,20 @@ namespace TheBorderRestaurantTests.TestLibrary
                 Price = 5.00,
                 ImageName = "Queso.jpg"
             };
-            var food4 = new FoodItem {
-                Id = 4,
-                Name = "Enchilada",
-                Description =
-                    "A corn tortilla rolled around a filling and covered with a savory sauce.",
-                Price = 8.00,
-                ImageName = "Enchiladas.jpg"
-            };
 
             var order1 = new FoodOrder {
                 Id = 1,
                 UserId = "admin",
                 OrderDateTime = DateTime.Now.AddDays(-2),
-                IsComplete = true
+                IsComplete = true,
+                FoodOrderItems = new List<FoodOrderItem>()
             };
             var order2 = new FoodOrder {
                 Id = 2,
                 UserId = "admin",
                 OrderDateTime = DateTime.Now,
-                IsComplete = false
+                IsComplete = false,
+                FoodOrderItems = new List<FoodOrderItem>()
             };
 
             var orderItem1 = new FoodOrderItem {
@@ -99,14 +93,15 @@ namespace TheBorderRestaurantTests.TestLibrary
                 Quantity = 2,
                 FoodOrders = new List<FoodOrder> {order2}
             };
+
             order1.FoodOrderItems.Add(orderItem1);
             order2.FoodOrderItems.Add(orderItem2);
-            var food = new List<FoodItem> {food1, food2, food3, food4};
+            var food = new List<FoodItem> {food1, food2, food3};
             var orders = new List<FoodOrder> {order1, order2};
             var orderItems = new List<FoodOrderItem> {orderItem1, orderItem2};
-            var orderRepo = new Mock<Repository<FoodOrder>>();
-            var orderItemRepo = new Mock<Repository<FoodOrderItem>>();
-            var foodRepo = new Mock<Repository<FoodItem>>();
+            var orderRepo = new Mock<IRepository<FoodOrder>>();
+            var orderItemRepo = new Mock<IRepository<FoodOrderItem>>();
+            var foodRepo = new Mock<IRepository<FoodItem>>();
             orderRepo.Setup(repo => repo.Get(null)).Returns(orders.AsQueryable());
             orderItemRepo.Setup(repo => repo.Get(null)).Returns(orderItems.AsQueryable());
             foodRepo.Setup(repo => repo.Get(null)).Returns(food.AsQueryable());

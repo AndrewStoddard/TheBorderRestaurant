@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TheBorderRestaurant.Controllers;
 using Xunit;
 
-namespace TheBorderRestaurantTests.HomeConntrollerTests
+namespace TheBorderRestaurantTests.HomeControllerTests
 {
     public class TestAbout
     {
+        #region Methods
+
         [Fact]
         public void TestReturnsView()
         {
@@ -18,7 +15,8 @@ namespace TheBorderRestaurantTests.HomeConntrollerTests
             var controller = new HomeController(uow.Object);
             var result = controller.About() as ViewResult;
             Assert.IsType<ViewResult>(result);
-
         }
+
+        #endregion
     }
 }

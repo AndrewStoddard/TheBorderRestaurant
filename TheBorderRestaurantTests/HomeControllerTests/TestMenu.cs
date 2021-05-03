@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TheBorderRestaurant.Controllers;
 using Xunit;
 
-namespace TheBorderRestaurantTests.HomeConntrollerTests
+namespace TheBorderRestaurantTests.HomeControllerTests
 {
-    public class TestIndex
+    public class TestMenu
     {
+        #region Methods
+
         [Fact]
         public void TestReturnsView()
         {
             var uow = TestLibrary.TestLibrary.SetUpIUnitOfWork();
             var controller = new HomeController(uow.Object);
-            var result = controller.Index() as ViewResult;
+            var result = controller.Menu() as ViewResult;
             Assert.IsType<ViewResult>(result);
-
         }
+
+        #endregion
     }
 }
