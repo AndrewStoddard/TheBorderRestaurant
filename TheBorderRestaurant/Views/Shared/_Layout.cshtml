@@ -65,6 +65,10 @@
     </header>
     <div class="container">
             @RenderBody()
+            @if (TempData.Keys.Contains("message"))
+        {
+            <h4 class="bg-info text-center text-white p-2">@TempData["message"]</h4>
+        }
     </div>
 
     <footer class="border-top footer text-muted pb-4 pt-4" style="background-color: #dda92e; height: 10%">
@@ -79,7 +83,7 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
