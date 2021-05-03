@@ -7,7 +7,7 @@ using Xunit;
 
 namespace TheBorderRestaurantTests.AdminControllerTests
 {
-    public class IndexTests
+    public class FoodListTests
     {
         #region Methods
 
