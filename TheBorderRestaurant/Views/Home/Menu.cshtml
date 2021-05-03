@@ -4,12 +4,12 @@
 <div class="jumbotron text-center">
     <h1>Menu</h1>
 </div>
-<div class="row">
+<div class="row row-cols-4">
     @foreach (FoodItem item in ViewBag.FoodItems)
     {
-        <div class="col">
+        <div class="col-3">
             <div class="card w-100 m-2">
-                <img src="@($"../images/{item.ImageName}")" class="card-img-top rounded p-1" style="width: 100%; height: 100%">
+                <img src="@($"../images/{item.ImageName}")" class="card-img-top rounded p-1" style="width: 250px; height: 250px;">
                 <div class="card-body" style="background-color: red; color: white;">
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text">@item.Price > @item.Description</p>

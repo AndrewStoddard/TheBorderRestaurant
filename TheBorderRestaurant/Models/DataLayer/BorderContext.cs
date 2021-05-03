@@ -60,14 +60,70 @@ namespace TheBorderRestaurant.Models.DataLayer
                     Price = 5.00,
                     ImageName = "Queso.jpg"
                 },
-                new FoodItem {
+                new FoodItem
+                {
                     Id = 4,
                     Name = "Enchilada",
                     Description =
                         "A corn tortilla rolled around a filling and covered with a savory sauce.",
                     Price = 8.00,
                     ImageName = "Enchiladas.jpg"
+                },
+                new FoodItem
+                {
+                    Id = 5,
+                    Name = "Chicken Tendies",
+                    Description =
+                        "Some fried chicken for ya belly.",
+                    Price = 9.00,
+                    ImageName = "Chicken.jpg"
+                },
+            new FoodItem
+                {
+                    Id = 6,
+                    Name = "Shrimp Cocktail",
+                    Description =
+                        "Seafood dish consisting of shelled, cooked prawns in a Marie Rose sauce or cocktail sauce, served in a glass.",
+                    Price = 18.00,
+                    ImageName = "ShrimpCocktail.jpg"
+                },
+            new FoodItem
+                {
+                    Id = 7,
+                    Name = "Burrito",
+                    Description =
+                        "A flour tortilla wrapped into a sealed cylindrical shape around various ingredients.",
+                    Price = 4.00,
+                    ImageName = "Burrito.jpg"
+            },
+            new FoodItem
+                {
+                    Id = 8,
+                    Name = "Fajitas",
+                    Description =
+                        "The term originally referred to skirt steak, the cut of beef first used in the dish.",
+                    Price = 7.00,
+                    ImageName = "Fajitas.jpg"
+                },
+            new FoodItem
+                {
+                    Id = 9,
+                    Name = "Tilapia Loco",
+                    Description =
+                        "Just Tilapia but Loco.",
+                    Price = 12.00,
+                    ImageName = "Tilapia.jpg"
+                },
+            new FoodItem
+                {
+                    Id = 10,
+                    Name = "Mexican Fries",
+                    Description =
+                        "Fries with some Mexican Flair.",
+                    Price = 2.00,
+                    ImageName = "Fries.jpg"
                 }
+
             );
         }
 
